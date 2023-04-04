@@ -17,8 +17,4 @@ if [ $ALIAS_EXISTS -eq 0 ]; then
 
   # Apply the changes to the current terminal session
   source ~/.bashrc
-
-  echo "Alias created successfully!"
-else
-  echo "The alias '$SCRIPT_NAME' already exists in your .bashrc file."
 fi
