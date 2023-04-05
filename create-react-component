@@ -11,44 +11,14 @@ if [[ ${1:0:1} != [A-Z] ]] || [[ ${1:1} != *[a-z]* ]]; then
   exit 1
 fi
 
-include_styles=false
-include_props=false
-include_redux=false
-
-# Check for the -i flag
-while getopts "i" opt; do
-  case ${opt} in
-    s )
-      # Set the variable to true if the -i flag is passed
-      include_styles=true
-      ;;
-    p )
-      # Set the variable to true if the -i flag is passed
-      include_redux=true
-      ;;
-    \? )
-      echo "Invalid option: -$OPTARG" 1>&2
-      exit 1
-      ;;
-  esac
-done
-
-# Now that we've checked for the -i flag, we can start executing the rest of the script.
-# The value of the "interactive" variable can be used throughout the script to determine whether to prompt the user for input or not.
-
-if [ "$include_styles" = true ]; then
-  echo "Including styles"
+if [ -d "$1" ]
+then
+    echo "Component folder already exists"
+    exit 1
 fi
 
-if [ "$include_props" = true ]; then
-  echo "Including propTypes"
-fi
 
-if [ "$include_redux" = true ]; then
-  echo "Including redux"
-fi
-
-# Assign the argument to a  variable
+# Assign the argument to a friendly variable
 COMPONENT_NAME="$1"
 COMPONENT_NAME_LOWER="$(tr '[:upper:]' '[:lower:]' <<<"${1:0:1}")${1:1}"
 
@@ -101,4 +71,4 @@ export { default } from "./$COMPONENT_NAME.jsx";
 EOF
 
 # Confirm that the file was created and populated
-echo "Created component skeleton named "$COMPONENT_NAME"'
+echo 'Created component skeleton named "'$COMPONENT_NAME'"'
