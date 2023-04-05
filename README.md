@@ -9,6 +9,8 @@ git clone https://github.com/aidanalexander/create-react-component
 cd create-react-component
 sudo chmod +x install.sh
 ./install.sh
+cd ..
+rm -rf create-react-component
 ```
 
 ### Options
@@ -26,5 +28,6 @@ create-react-component MyComponent
 create-react-component -s MyComponentWithStyles
 create-react-component -p MyComponentWithProps
 create-react-component -r MyComponentWithRedux
+create-react-component -sp MyComponentWithStyleAndProps
 create-react-component -spr MyComponentWithAll
 ```
