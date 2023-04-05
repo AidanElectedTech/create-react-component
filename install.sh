@@ -18,3 +18,5 @@ if [ $ALIAS_EXISTS -eq 0 ]; then
   # Apply the changes to the current terminal session
   source ~/.bashrc
 fi
+
+echo 'Alias created in "~/.bashrc" and script installed in "/usr/local/bin/'$SCRIPT_NAME'"'
