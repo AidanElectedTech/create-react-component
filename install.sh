@@ -1,9 +1,17 @@
 #!/bin/bash
 
-SCRIPT_NAME="create-react-component"     # Replace with the desired alias name
+SCRIPT_NAME="create-react-component"
+ENVIROMENT=$(uname -s)
+CONFIG_FILE=$([[ $ENVIROMENT == "Linux" ]] && echo ~/.bashrc || echo ~/.zshrc)
+
+if [[ $ENVIROMENT != "Linux" ]]; then
+    if [[ ! -e $CONFIG_FILE ]]; then
+        touch "$CONFIG_FILE"
+    fi
+fi
 
 # Check if the alias already exists
-ALIAS_EXISTS=$(grep -ic "$SCRIPT_NAME=" ~/.bashrc)
+ALIAS_EXISTS=$(grep -ic "$SCRIPT_NAME=" "$CONFIG_FILE")
 
 # Copy the script to the /usr/local/bin directory
 sudo cp $SCRIPT_NAME /usr/local/bin
@@ -13,10 +21,10 @@ sudo chmod +x /usr/local/bin/$SCRIPT_NAME
 
 if [ $ALIAS_EXISTS -eq 0 ]; then
   # Add the alias to the .bashrc file
-  echo "alias $SCRIPT_NAME='/usr/local/bin/$SCRIPT_NAME'" >> ~/.bashrc
+  echo "alias $SCRIPT_NAME='/usr/local/bin/$SCRIPT_NAME'" >> $CONFIG_FILE
 
   # Apply the changes to the current terminal session
-  source ~/.bashrc
+  source $CONFIG_FILE
 fi
 
-echo 'Alias created in "~/.bashrc" and script installed in "/usr/local/bin/'$SCRIPT_NAME'"'
+echo 'Alias created in "'$CONFIG_FILE'" and script installed to "/usr/local/bin/'$SCRIPT_NAME'"'
