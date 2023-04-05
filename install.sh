@@ -25,7 +25,7 @@ if [ $ALIAS_EXISTS -eq 0 ]; then
   echo "alias $ALIAS_NAME='/usr/local/bin/$SCRIPT_FILENAME'" >> $CONFIG_FILE
 
   # Apply the changes to the current terminal session
-  source $CONFIG_FILE
+  bash
 fi
 
 echo 'Alias "'$ALIAS_NAME'" created in "'$CONFIG_FILE'" and script installed to "/usr/local/bin/'$SCRIPT_FILENAME'"'
