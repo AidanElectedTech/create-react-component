@@ -38,7 +38,6 @@ then
     exit 1
 fi
 
-
 # Assign the argument to a friendly variable
 COMPONENT_NAME="$1"
 COMPONENT_NAME_LOWER="$(tr '[:upper:]' '[:lower:]' <<<"${1:0:1}")${1:1}"
@@ -47,6 +46,7 @@ COMPONENT_NAME_LOWER="$(tr '[:upper:]' '[:lower:]' <<<"${1:0:1}")${1:1}"
 mkdir $COMPONENT_NAME
 cd $COMPONENT_NAME
 
+if $INCLUDE_STYLES; then
 # Create the styles file
 cat <<EOF > "$COMPONENT_NAME.style.js"
 import { createUseStyles } from "react-jss";
@@ -59,31 +59,51 @@ const useStyles = createUseStyles({
 
 export default useStyles;
 EOF
+fi
 
-# Create the propTypes file
-cat <<EOF > "$COMPONENT_NAME.propTypes.js"
+if $INCLUDE_PROPS; then
+  # Create the propTypes file
+  cat <<EOF > "$COMPONENT_NAME.propTypes.js"
 import PropTypes from "prop-types";
 
 const propTypes = {};
 
 export default propTypes;
 EOF
+fi
+
+if $INCLUDE_REDUX; then
+  # Create the propTypes file
+  cat <<EOF > "$COMPONENT_NAME.redux.js"
+import { useSelector } from "react-redux";
+
+export const useReduxSlice = () => {
+  const value = useSelector(state => state["slicename"].value);
+  return { value };
+};
+
+EOF
+fi
+
 
 # Create the file and write some sample code to it using a here document
 cat <<EOF > "$COMPONENT_NAME.jsx"
 import React from "react";
 import propTypes from "./$COMPONENT_NAME.propTypes.js"
 import useStyles from "./$COMPONENT_NAME.styles.js"
+import { useReduxSlice } from "./$COMPONENT_NAME.redux.js"
 
 const $COMPONENT_NAME = () => {
-  const classes = useStyles()
+  const classes = useStyles();
+
+  const { value } = useReduxSlice();
 
   return <div className={classes.$COMPONENT_NAME_LOWER}>$COMPONENT_NAME component</div>
 }
 
-$COMPONENT_NAME.propTypes = propTypes
+$COMPONENT_NAME.propTypes = propTypes;
 
-export default $COMPONENT_NAME
+export default $COMPONENT_NAME;
 EOF
 
 # Create the index file
