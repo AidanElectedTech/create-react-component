@@ -66,7 +66,9 @@ if $INCLUDE_PROPS; then
   cat <<EOF > "$COMPONENT_NAME.propTypes.js"
 import PropTypes from "prop-types";
 
-const propTypes = {};
+const propTypes = {
+  $COMPONENT_NAME_LOWER: PropTypes.any
+};
 
 export default propTypes;
 EOF
@@ -85,31 +87,34 @@ export const useReduxSlice = () => {
 EOF
 fi
 
-
 # Create the file and write some sample code to it using a here document
 cat <<EOF > "$COMPONENT_NAME.jsx"
-import React from "react";
-import propTypes from "./$COMPONENT_NAME.propTypes.js"
-import useStyles from "./$COMPONENT_NAME.styles.js"
-import { useReduxSlice } from "./$COMPONENT_NAME.redux.js"
+import React from "react"
+$(if [ "$INCLUDE_PROPS" = true ]; then echo "import propTypes from \"./$COMPONENT_NAME.propTypes.js\""; fi)
+$(if [ "$INCLUDE_STYLES" = true ]; then echo "import useStyles from \"./$COMPONENT_NAME.styles.js\""; fi)
+$(if [ "$INCLUDE_REDUX" = true ]; then echo "import { useReduxSlice } from \"./$COMPONENT_NAME.redux.js\""; fi)
 
-const $COMPONENT_NAME = () => {
-  const classes = useStyles();
+$(if [ "$INCLUDE_PROPS" = true ]; then echo "const $COMPONENT_NAME = ({ $COMPONENT_NAME_LOWER }) => {"; else echo "const $COMPONENT_NAME = () => {"; fi)
+$(if [ "$INCLUDE_STYLES" = true ]; then echo "  const classes = useStyles()"; fi)
+$(if [ "$INCLUDE_REDUX" = true ]; then echo "  const { value } = useReduxSlice()"; fi)
 
-  const { value } = useReduxSlice();
-
-  return <div className={classes.$COMPONENT_NAME_LOWER}>$COMPONENT_NAME component</div>
+  return (
+$(if [ "$INCLUDE_STYLES" = true ]; then echo "    <div className={classes.$COMPONENT_NAME_LOWER}>$COMPONENT_NAME component</div>"; else echo "    <div>$COMPONENT_NAME component</div>"; fi)
+  )
 }
 
-$COMPONENT_NAME.propTypes = propTypes;
+$(if [ "$INCLUDE_PROPS" = true ]; then echo "$COMPONENT_NAME.propTypes = propTypes"; fi)
 
-export default $COMPONENT_NAME;
+export default $COMPONENT_NAME
 EOF
 
 # Create the index file
 cat <<EOF > "index.js"
 export { default } from "./$COMPONENT_NAME.jsx";
 EOF
+
+# Remove extra empty lines from the output
+sed -i '/^$/N;/^\n$/D' "$COMPONENT_NAME.jsx"
 
 # Confirm that the file was created and populated
 echo 'Created component skeleton named "'$COMPONENT_NAME'"'
