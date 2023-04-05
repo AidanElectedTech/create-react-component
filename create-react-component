@@ -1,5 +1,26 @@
 #!/bin/bash
 
+# Flag variables
+INCLUDE_STYLES=false
+INCLUDE_PROPS=false
+INCLUDE_REDUX=false
+
+while getopts "spr" flag; do
+    case $flag in
+        s)
+            INCLUDE_STYLES=true
+            ;;
+        p)
+            INCLUDE_PROPS=true
+            ;;
+        r)
+            INCLUDE_REDUX=true
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+
 # Check if a component name was provided as an argument
 if [ -z "$1" ]; then
   echo "Please provide a component name as an argument"
