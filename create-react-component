@@ -48,7 +48,7 @@ cd $COMPONENT_NAME
 
 if $INCLUDE_STYLES; then
 # Create the styles file
-cat <<EOF > "$COMPONENT_NAME.style.js"
+cat <<EOF > "$COMPONENT_NAME.styles.js"
 import { createUseStyles } from "react-jss";
 
 const useStyles = createUseStyles({
