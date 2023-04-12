@@ -17,6 +17,9 @@ ALIAS_EXISTS=$(grep -ic "$ALIAS_NAME=" "$CONFIG_FILE")
 # Copy the script to the /usr/local/bin directory
 sudo cp $SCRIPT_FILENAME /usr/local/bin
 
+# Tell the user the script was copied
+echo './'$SCRIPT_FILENAME' copied to "/usr/local/bin/'$SCRIPT_FILENAME'"'
+
 # Make the script executable
 sudo chmod +x /usr/local/bin/$SCRIPT_FILENAME
 
@@ -24,8 +27,10 @@ if [ $ALIAS_EXISTS -eq 0 ]; then
   # Add the alias to the .bashrc file
   echo "alias $ALIAS_NAME='/usr/local/bin/$SCRIPT_FILENAME'" >> $CONFIG_FILE
 
+  # Tell user the alias was created
+  echo 'Alias "'$ALIAS_NAME'" created in "'$CONFIG_FILE'"'
+
   # Apply the changes to the current terminal session
   bash
 fi
 
-echo 'Alias "'$ALIAS_NAME'" created in "'$CONFIG_FILE'" and script installed to "/usr/local/bin/'$SCRIPT_FILENAME'"'
