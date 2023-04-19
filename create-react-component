@@ -52,8 +52,7 @@ cat <<EOF > "$COMPONENT_NAME.styles.js"
 import { createUseStyles } from "react-jss";
 
 const useStyles = createUseStyles({
-  $COMPONENT_NAME_LOWER: {
-  },
+  $COMPONENT_NAME_LOWER: {},
 });
 
 export default useStyles;
@@ -66,7 +65,7 @@ if $INCLUDE_PROPS; then
 import PropTypes from "prop-types";
 
 const propTypes = {
-  $COMPONENT_NAME_LOWER: PropTypes.any
+  $COMPONENT_NAME_LOWER: PropTypes.any,
 };
 
 export default propTypes;
