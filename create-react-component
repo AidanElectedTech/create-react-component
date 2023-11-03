@@ -4,8 +4,9 @@
 INCLUDE_STYLES=false
 INCLUDE_PROPS=false
 INCLUDE_REDUX=false
+INCLUDE_TEST=false
 
-while getopts "spr" flag; do
+while getopts "sprt" flag; do
     case $flag in
         s)
             INCLUDE_STYLES=true
@@ -15,6 +16,9 @@ while getopts "spr" flag; do
             ;;
         r)
             INCLUDE_REDUX=true
+            ;;
+        t)
+            INCLUDE_TEST=true
             ;;
     esac
 done
@@ -81,6 +85,30 @@ export const useReduxSlice = () => {
   const value = useSelector(state => state["slicename"].value);
   return { value };
 };
+
+EOF
+fi
+
+if $INCLUDE_TEST; then
+  # Create the test file
+  cat <<EOF > "$COMPONENT_NAME.test.jsx"
+import '@testing-library/jest-dom'
+
+import $COMPONENT_NAME from './$COMPONENT_NAME'
+import React from 'react'
+import { render } from '@testing-library/react'
+
+const text = "Hello, World!"
+
+test('<$COMPONENT_NAME> exists', () => {
+  const { getByText } = render(
+    <$COMPONENT_NAME>
+      <h1>{text}</h1>
+    </$COMPONENT_NAME>
+  )
+  expect(getByText(text)).toBeInTheDocument()
+})
+
 
 EOF
 fi
