@@ -79,11 +79,16 @@ fi
 if $INCLUDE_REDUX; then
   # Create the propTypes file
   cat <<EOF > "$COMPONENT_NAME.redux.js"
-import { useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
+
+// import { dispatchSetValue } from "../slice/slicename";
 
 export const useReduxSlice = () => {
-  const value = useSelector(state => state["slicename"].value);
-  return { value };
+  // const dispatch = useDispatch()
+  // const setValue = (value) => dispatch(dispatchSetValue(value))
+  // const value = useSelector((state) => state["slicename"].value);
+
+  return { value: "", setValue: () => {} };
 };
 
 EOF
